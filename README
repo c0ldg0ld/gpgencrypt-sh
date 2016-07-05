@@ -1,0 +1,39 @@
+#! /bin/bash
+
+#    ________________________________________________________________________
+#   |                                                                        |
+#   |                         GPGEncrypt.sh                                  | 
+#   |                                                                        |
+#   |  This script is designed to help automate the process of creating and  |
+#   |  or sending an encrypted message to a friend who's gpg public key you  |
+#   |  already have imported to your keychain.                               |
+#   |                                                                        |
+#   |  Feel free to use, just leave my name somewhere in here.  If you make  |
+#   |  Improvements, put your name in here too!                              |
+#   |                                                                        |
+#   |  *** Written by c0ldg0ld 7/2014  Version 0.6 ***                       |
+#   |                                                                        |
+#   |________________________________________________________________________|
+
+#  0.6 - Turns out if you sign a message there is no need to add yourself as a recipient to read it     
+#        later so I removed that part. 7-2-2016 -DD
+#
+#  0.5 - Added variable at top for user's key and stuff to sign and encrypt messages to yourself as
+#        well as the intended recipient.  That way you can decrypt your sent messages as well.
+
+
+# Change this to your default key for signing and to make sure you can read any
+# messages you create.
+
+
+
+USAGE:
+
+Make sure you already have GPG setup on your system and your keys and your contact's keys setup.
+
+Edit the GPGEncrypt.sh file and change the MYKEY variable to either your key's ID or fingerprint.
+
+
+chmod +x GPGEncrypt.sh 
+
+./GPGEncrypt.sh
