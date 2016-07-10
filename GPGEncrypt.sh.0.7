@@ -11,10 +11,14 @@
 #   |  Feel free to use, just leave my name somewhere in here.  If you make  |
 #   |  Improvements, put your name in here too!                              |
 #   |                                                                        |
-#   |  *** Written by c0ldg0ld 7/2014  Version 0.6 ***                       |
+#   |  *** Written by c0ldg0ld 7/2014  Version 0.7 ***                       |
 #   |                                                                        |
 #   |________________________________________________________________________|
-
+#
+#  0.7 - Added the GPG variable at the top for people to adjust for their version of GPG in case both are 
+#        Installed on their system.  I will automate the check somehow later.  I'll just leave this part here
+#        for now: gpg --version | cut -d. -f1 | grep -i gpg | cut -d" " -f3 
+#
 #  0.6 - Turns out if you sign a message there is no need to add yourself as a recipient to read it	
 #	 later so I removed that part. Also fixed MYKEY variable so it didn't throw errors 7-2-2016 -DD
 #
@@ -26,6 +30,10 @@
 # messages you create.
 
 MYKEY="c0ldg0ld@protonmail.ch"
+# 
+# Please change this variable to either "gpg" for gnupg 1.x or "gpg2" for gnupg2.x
+#
+GPG="gpg2"
 
 clear
 echo ""
@@ -40,7 +48,7 @@ read CHECKEYS
 if [[ "$CHECKEYS" == "y" || "$CHECKEYS" == "Y" ]] ; then
 	{ 	
 	clear
-	gpg2 -k
+	$GPG --list-keys
 	}
 else
 	clear
@@ -81,7 +89,7 @@ echo""
 read CHOICE
 clear
 rm -f encrmsg.txt
-gpg --default-key $MYKEY -e --armor -o encrmsg.txt -r $MYKEY --sign /tmp/msg.txt
+$GPG --default-key $MYKEY -e --armor -o encrmsg.txt -r $MYKEY --sign /tmp/msg.txt
 rm  -f /tmp/msg.txt
 
 # Will put some logic here to account for if they chose to email
