@@ -89,7 +89,7 @@ echo""
 read CHOICE
 clear
 rm -f encrmsg.txt
-$GPG --default-key $MYKEY -e --armor -o encrmsg.txt -r $MYKEY --sign /tmp/msg.txt
+$GPG --default-key $MYKEY -e --armor -o encrmsg.txt -r $EMAIL --sign /tmp/msg.txt
 rm  -f /tmp/msg.txt
 
 # Will put some logic here to account for if they chose to email
