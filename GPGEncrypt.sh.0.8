@@ -1,0 +1,121 @@
+#! /bin/bash
+
+#    ________________________________________________________________________
+#   |                                                                        |
+#   |                         GPGEncrypt.sh                                  |
+#   |                                                                        |
+#   |  This script is designed to help automate the process of creating and  |
+#   |  or sending an encrypted message to a friend who's gpg public key you  |
+#   |  already have imported to your keychain.                               |
+#   |                                                                        |
+#   |  Feel free to use, just leave my name somewhere in here.  If you make  |
+#   |  Improvements, put your name in here too!                              |
+#   |                                                                        |
+#   |  *** Written by c0ldg0ld 7/2014  Version 0.8 ***                       |
+#   |                                                                        |
+#   |________________________________________________________________________|
+#
+#
+#  0.8 - Re-enabled the email portion after I got it working
+#
+#  0.7 - Added the GPG variable at the top for people to adjust for their version of GPG in case both are
+#        Installed on their system.  I will automate the check somehow later.  I'll just leave this part here
+#        for now: gpg --version | cut -d. -f1 | grep -i gpg | cut -d" " -f3
+#
+#  0.6 - Turns out if you sign a message there is no need to add yourself as a recipient to read it
+#        later so I removed that part. Also fixed MYKEY variable so it didn't throw errors 7-2-2016 -DD
+#
+#  0.5 - Added variable at top for user's key and stuff to sign and encrypt messages to yourself as
+#        well as the intended recipient.  That way you can decrypt your sent messages as well.
+
+
+# Change this to your default key for signing and to make sure you can read any
+# messages you create.
+
+MYKEY="c0ldg0ld@protonmail.ch"
+# 
+# Please change this variable to either "gpg" for gnupg 1.x or "gpg2" for gnupg2.x
+#
+GPG="gpg2"
+
+clear
+echo ""
+echo " _________________________________________________________ "
+echo "|                                                         |"
+echo "|  Ok, before we get started, would you like to see your  |"
+echo "|         GPG key chain to refresh your memory?           |"
+echo "|_________________________________________________________|"
+echo""
+read CHECKEYS
+
+if [[ "$CHECKEYS" == "y" || "$CHECKEYS" == "Y" ]] ; then
+	{ 	
+	clear
+	$GPG --list-keys
+	}
+else
+	clear
+fi
+
+echo ""
+echo " _________________________________________________________ "
+echo "|                                                         |"
+echo "|  Please enter the email associated with the recipients  |"
+echo "|                        GPG key                          |"
+echo "|_________________________________________________________|"
+echo""
+read EMAIL
+clear
+echo " _________________________________________________________ "
+echo "|                                                         |"
+echo "|  Excellent, now please type the message you wish to     |"
+echo "|  encrypt.  To end the message please press the carriage |"
+echo "|                   return and then ctrl +d               |"
+echo "|_________________________________________________________|"
+echo ""
+cat > /tmp/msg.txt
+input=`cat /tmp/msg.txt`
+
+# Code to ask if the user wants to email or not.
+
+while [[ $CHOICE != 1 || $CHOICE != 2 ]]
+do
+	clear
+	echo " _________________________________________________________ "
+	echo "|                                                         |"
+	echo "|  Almost done, now would you like me to do:              |"
+	echo "|  1) Send the message to the email you entered?          |"
+	echo "|  2) Just leave the encrypted text file for you?         |"
+	echo "|                                                         |"
+	echo "|  Please enter 1 or 2:                                   |"
+	echo "|_________________________________________________________|"
+	echo""
+	read CHOICE
+	clear
+	rm -f encrmsg.txt
+	$GPG --default-key $MYKEY -e --armor -o encrmsg.txt -r $EMAIL --sign /tmp/msg.txt
+	rm  -f /tmp/msg.txt
+
+	# Will put some logic here to account for if they chose to email
+	# or simply spit out a file
+	# 
+	# Also will probably look into shredding the original file in 
+	# /tmp/msg.txt
+
+	if [ $CHOICE == '1' ] ; then
+		cat encrmsg.txt | sendmail -f c0ldg0ld@protonmail.ch $EMAIL
+		break
+	elif [ $CHOICE == '2' ] ; then
+		echo "Ok, your file is in this directory."
+		sleep 3
+		break
+	fi
+
+done
+clear
+echo " _________________________________________________________ "
+echo "|                                                         |"
+echo "|               We're all done here, bye now.             |" 
+echo "|_________________________________________________________|"
+echo""
+

@@ -9,9 +9,12 @@
 #   |  Feel free to use, just leave my name somewhere in here.  If you make  |
 #   |  Improvements, put your name in here too!                              |
 #   |                                                                        |
-#   |  *** Written by c0ldg0ld 7/2014  Version 0.7 ***                       |
+#   |  *** Written by c0ldg0ld 7/2014  Version 0.8 ***                       |
 #   |                                                                        |
 #   |________________________________________________________________________|
+#
+#
+#  0.8 - Re-enabled the email portion after I got it working
 #
 #  0.7 - Added the GPG variable at the top for people to adjust for their version of GPG in case both are 
 #        Installed on their system.  I will automate the check somehow later.  I'll just leave this part here
